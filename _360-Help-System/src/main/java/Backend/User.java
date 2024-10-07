@@ -9,6 +9,7 @@ public class User {
 	protected String firstName;
 	protected String middleName;
 	protected String lastName;
+	protected String preferredName;
 	protected boolean isStudent;
 	protected boolean isAdmin;
 	protected boolean isInstructor;
@@ -22,6 +23,7 @@ public class User {
 		this.firstName = "";
 		this.middleName = "";
 		this.lastName = "";
+		this.preferredName = "";
 		this.isStudent = false;
 		this.isAdmin = false;
 		this.isInstructor = false;
@@ -29,13 +31,14 @@ public class User {
 	}
 	
 	// Parameterized constructor to initialize a user with specific values
-	public User(String username, String password, String email, String firstName, String middleName, String lastName) {
+	public User(String username, String password, String email, String firstName, String middleName, String lastName,String preferredName) {
 		this.username = username;
 		this.password = password;
 		this.email = email;
 		this.firstName = firstName;
 		this.middleName = middleName;
 		this.lastName = lastName;
+		this.preferredName = preferredName;
 		this.isStudent = false;  // User role defaults to none (admin/student/instructor must be set later)
 		this.isAdmin = false;
 		this.isInstructor = false;
@@ -95,6 +98,11 @@ public class User {
 	public String getLastName() {
 		return this.lastName;
 	}
+
+	// Getter and setter methods for the preferred name
+	public void setPreferredName(String preferredName) {this.preferredName = preferredName;}
+
+	public String getPreferredName() {return this.preferredName;}
 	
 	// Marks the account setup as completed
 	public void finishAccountSetup() {
@@ -135,4 +143,5 @@ public class User {
 	public void setStudent() {
 		this.isStudent = true;
 	}
+
 }

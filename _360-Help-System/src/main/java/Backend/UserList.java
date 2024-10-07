@@ -19,14 +19,18 @@ public class UserList {
 
     // Remove a user from the list 
     public boolean removeUser(User user) {
-        if (userL.contains(user)) { // Check if user exists in the list
-            userL.remove(user); // Remove the user
-            return true;
-        } 
-        else 
-        {
-            return false;
+        // Check if user exists in the list
+        return userL.remove(user); // Remove the user
+    }
+
+    public User getUser(String username) {
+        for (User user : userL) {
+            if(user.username.equals(username))
+            {
+                return user;
+            }
         }
+        return null;
     }
 
 
@@ -44,7 +48,7 @@ public class UserList {
         } 
         else 
         {
-            for (User user : userL) { // Use userL to iterate over
+            for(User user : userL) { // Use userL to iterate over
                 //Need to implement front end list
         }
         }
