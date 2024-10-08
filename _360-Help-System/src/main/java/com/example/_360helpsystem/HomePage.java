@@ -9,43 +9,41 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class HomePage extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        // Top bar with "Home" label on the left and "Logout" button on the right
+        // Top bar to hold the "Home" label and "Logout" button
         HBox topBar = new HBox();
-        topBar.setPadding(new Insets(10, 10, 10, 10));
+        topBar.setPadding(new Insets(5, 10, 10, 10)); // Padding for the top bar
 
-        // "Home" text on the left
-        Label homeText = WindowUtil.createStyledLabel("Home", 24);
-        topBar.getChildren().add(homeText);
-        HBox.setMargin(homeText, new Insets(0, 0, 0, 10));  // Extra padding for spacing
-
-        // Add spacer to push the "Logout" button to the right
-        HBox spacer = new HBox();
-        HBox.setHgrow(spacer, Priority.ALWAYS);  // Make the spacer grow to push the Logout button to the right
-        topBar.getChildren().add(spacer);
-
-        // "Logout" button on the right
+        // "Logout" button aligned to the right
         Button logoutButton = WindowUtil.createStyledButton("Logout");
-        logoutButton.setFont(WindowUtil.createStyledLabel("Logout", 18).getFont());  // Consistent font
-        topBar.getChildren().add(logoutButton);
+        logoutButton.setFont(WindowUtil.createStyledLabel("Logout", 18).getFont());
 
-        // Align the top bar
+        // Spacer to center the "Home" label
+        HBox spacerLeft = new HBox();
+        HBox spacerRight = new HBox();
+        HBox.setHgrow(spacerLeft, Priority.ALWAYS);
+        HBox.setHgrow(spacerRight, Priority.ALWAYS);
+
+        // "Home" label at the center
+        Label homeText = WindowUtil.createStyledLabel("Home", 24);
+
+        // Add spacerLeft, homeText, and spacerRight to center "Home"
+        topBar.getChildren().addAll(spacerLeft, homeText, spacerRight, logoutButton);
+
+        // Align the top bar elements
         topBar.setAlignment(Pos.CENTER);
 
         // Create the circular back button using ButtonStyleUtil
         Button backButton = ButtonStyleUtil.createCircularBackButton();
 
         // Handle back button action
-        backButton.setOnAction(e -> showPreviousScreen(primaryStage));  // Implement your back button logic here
-
-        // Create the main layout with the top bar and back button
-        BorderPane root = new BorderPane();
-        root.setTop(topBar);
+        backButton.setOnAction(e -> showPreviousScreen(primaryStage));
 
         // Create a BorderPane to position the back button at the top left
         BorderPane backButtonPane = new BorderPane();
@@ -55,7 +53,16 @@ public class HomePage extends Application {
         BorderPane.setAlignment(backButton, Pos.TOP_LEFT);
         BorderPane.setMargin(backButton, new Insets(5, 0, 0, 5));  // Gap of 5 from top and left
 
-        root.setLeft(backButtonPane);
+        // Combine topBar and backButton in a VBox to create a top layout
+        VBox topLayout = new VBox();
+        topLayout.getChildren().addAll(backButtonPane, topBar);
+
+        // Set padding between the back button and the top bar
+        VBox.setMargin(topBar, new Insets(5, 0, 0, 0)); // 5px space between back button and top bar
+
+        // Create the main layout with the top bar and back button
+        BorderPane root = new BorderPane();
+        root.setTop(topLayout);
 
         // Set the scene with the required window size
         Scene scene = new Scene(root, 600, 600);  // Set to 600x600
@@ -80,15 +87,11 @@ public class HomePage extends Application {
     // Method to handle back button logic
     private void showPreviousScreen(Stage primaryStage) {
         SignInAs signInAs = new SignInAs();
-        try{
+        try {
             signInAs.start(primaryStage);
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
-    }
 
-    public static void main(String[] args) {
-        launch(args);
     }
 }

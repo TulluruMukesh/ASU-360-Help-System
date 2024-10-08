@@ -8,7 +8,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -64,16 +63,11 @@ public class SignIn extends Application {
 
         // Create login button using WindowUtil's standardized button style
         Button loginButton = WindowUtil.createStyledButton("Sign In");
-        loginButton.setPrefWidth(120);  // Increased width for better fit
+        loginButton.setPrefWidth(120);  // Set a reasonable width for the button
 
-        // Center the login button horizontally
-        GridPane.setHalignment(loginButton, HPos.CENTER);  // Center the button horizontally
-
-        // Create an HBox for the button
-        HBox loginButtonBox = new HBox(10);
-        loginButtonBox.setAlignment(Pos.CENTER);  // Align the button to the center
-        loginButtonBox.getChildren().add(loginButton);
-        grid.add(loginButtonBox, 1, 4);  // Add button to the second column, new row
+        // Center the login button horizontally within the grid
+        grid.add(loginButton, 0, 4, 2, 1);  // Span across both columns
+        GridPane.setHalignment(loginButton, HPos.CENTER);  // Align the button in the center
 
         // Create the circular back button using ButtonStyleUtil
         Button backButton = ButtonStyleUtil.createCircularBackButton();
