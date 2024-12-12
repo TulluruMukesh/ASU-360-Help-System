@@ -1,9 +1,7 @@
+
 package com.example._360helpsystem;
 
-import Backend.OTPList;
-import Backend.PasswordEvaluator;
-import Backend.Update_DB;
-import Backend.UserList;
+import Backend.*;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -17,6 +15,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
+import javax.crypto.SecretKey;
+import java.util.ArrayList;
 
 /*******
  * <p> CreateAdminAccount Class </p>
@@ -32,7 +33,12 @@ public class CreateAdminAccount extends Application {
 
     public static UserList USER_LIST = new UserList();
     public static OTPList OTP_LIST = new OTPList();
+    public static ArticleList ARTICLE_LIST = new ArticleList();
+    public static GroupList GROUP_LIST = new GroupList();
+    public static AccessList ACCESS_LIST = new AccessList();
+    public static ArrayList<String> SEARCH_HISTORY = new ArrayList<>();
     Update_DB UDB = new Update_DB();
+    //DEBUG
 
     public static void main(String[] args) {
         launch(args);
@@ -40,7 +46,7 @@ public class CreateAdminAccount extends Application {
 
     // This method checks if users exist and either shows the admin creation screen or opens the main screen based on that condition.
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws Exception {
         // Check if users exist (if none exist, show the first-time setup screen)
         initializeDB();
         boolean usersExist = checkIfUsersExist();
@@ -101,6 +107,7 @@ public class CreateAdminAccount extends Application {
 
         // Create the circular back button using ButtonStyleUtil
         Button backButton = ButtonStyleUtil.createCircularBackButton();
+        backButton.setVisible(false);
 
         // Handle back button action
         backButton.setOnAction(e -> showPreviousScreen(primaryStage));  // Implement your back button logic here
@@ -120,7 +127,7 @@ public class CreateAdminAccount extends Application {
 
         // Set standardized window size
         Scene scene = new Scene(root);
-        WindowUtil.setWindowSize(primaryStage, scene, 600, 600);  // Standard size applied
+        WindowUtil.setWindowSize(primaryStage, scene, 900, 700);  // Standard size applied
 
         primaryStage.show();
     }
@@ -153,16 +160,23 @@ public class CreateAdminAccount extends Application {
         }
     }
     // Loads the user and OTP databases from files.
-    private void initializeDB()
-    {
+    private void initializeDB() throws Exception {
         UDB.loadUserDB(USER_LIST);
         UDB.loadOTPDB(OTP_LIST);
+        UDB.loadArticleDB(ARTICLE_LIST);
+        UDB.loadGrpDB(GROUP_LIST);
+        UDB.loadRequestsDB();
+        SEARCH_HISTORY.clear();
     }
     // This method saves the databases when the application is closing.
     public void stop() {
         // Save user and OTP databases when the application is closing
         UDB.saveUserDB(USER_LIST);
         UDB.saveOTPDB(OTP_LIST);
+        UDB.saveArticleDB(ARTICLE_LIST);
+        UDB.saveGrpDB(GROUP_LIST);
+        UDB.saveRequestsDB();
+        SEARCH_HISTORY.clear();
         System.out.println("Databases saved successfully.");
     }
 }

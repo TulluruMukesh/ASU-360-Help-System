@@ -27,7 +27,20 @@ import javafx.stage.Stage;
  *
  */
 
+import static com.example._360helpsystem.CreateAdminAccount.GROUP_LIST;
 import static com.example._360helpsystem.CreateAdminAccount.USER_LIST;
+
+/*******
+ * <p> UserDetails Class </p>
+ *
+ * <p> Description: This class stores and manages details for users within the help system.
+ * It provides fields and methods to handle user information such as username, role, and
+ * other relevant attributes, supporting user authentication and authorization processes. </p>
+ *
+ * @version 1.00, 2024-10-30
+ * author Team - Th15
+ *
+ *******/
 
 public class UserDetails extends Application {
 
@@ -51,7 +64,7 @@ public class UserDetails extends Application {
     public void start(Stage primaryStage) {
         // Background setup
         StackPane backgroundPane = new StackPane();
-        Rectangle background = new Rectangle(600, 600, Color.web("#f8f5f3"));  // Set background size to 600x600
+        Rectangle background = new Rectangle(900, 700, Color.web("#f8f5f3"));  // Set background size to 600x600
         backgroundPane.getChildren().add(background);
 
         // GridPane for form layout
@@ -125,7 +138,7 @@ public class UserDetails extends Application {
         BorderPane.setMargin(backButton, new Insets(5, 0, 0, 5));  // Gap of 5 from top and left
 
         // Set the scene size to 600x600 and make all elements visible
-        Scene scene = new Scene(root, 600, 600);  // Adjusted scene size to 600x600
+        Scene scene = new Scene(root, 900, 700);  // Adjusted scene size to 600x600
         primaryStage.setTitle("User Details");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);  // Disable resizing to keep the layout consistent
@@ -151,6 +164,14 @@ public class UserDetails extends Application {
                 Student newStudent = new Student(username, password, email, firstName, middleName, lastName, preferredName);
                 newStudent.finishAccountSetup();
                 newStudent.setInstructor(true);
+                for(Group g : GROUP_LIST)
+                {
+                    if(!g.isSpecial())
+                    {
+                        g.addUser(newStudent);
+                        g.addAdmin(newStudent.getUserName());
+                    }
+                }
                 USER_LIST.getUserList().add(newStudent);  // getUserList() returns the LinkedList of User objects
                 USER_LIST.removeUser(USER_LIST.findUserByOTP(otp));
             }
@@ -158,6 +179,13 @@ public class UserDetails extends Application {
             {
                 Student newStudent = new Student(username, password, email, firstName, middleName, lastName, preferredName);
                 newStudent.finishAccountSetup();
+                for(Group g : GROUP_LIST)
+                {
+                    if(!g.isSpecial())
+                    {
+                        g.addUser(newStudent);
+                    }
+                }
                 USER_LIST.getUserList().add(newStudent);
                 USER_LIST.removeUser(USER_LIST.findUserByOTP(otp));
             }
@@ -165,6 +193,14 @@ public class UserDetails extends Application {
             {
                 Instructor newInstructor = new Instructor(username, password, email, firstName, middleName, lastName, preferredName);
                 newInstructor.finishAccountSetup();
+                for(Group g : GROUP_LIST)
+                {
+                    if(!g.isSpecial())
+                    {
+                        g.addUser(newInstructor);
+                        g.addAdmin(newInstructor.getUserName());
+                    }
+                }
                 USER_LIST.getUserList().add(newInstructor);
                 USER_LIST.removeUser(USER_LIST.findUserByOTP(otp));
             }
